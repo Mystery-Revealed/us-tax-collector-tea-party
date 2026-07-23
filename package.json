@@ -1,0 +1,18 @@
+{
+  "name": "us-tax-collector-tea-party",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tax Collector vs. Tea Party — Unit 2 U.S. History arcade game (TEKS 8.4A, 8.20B, 8.29B). Five British acts fly at you in six minutes: tap what each one really did, then pick how the colonists really hit back — while the game quietly fixes the 'Tea Act = new tax' misconception. Server-authoritative Socket.IO backend with a live Teacher Command Center.",
+  "comment": "No npm workspaces: this drive is exFAT, which cannot host the symlinks/junctions workspace linking requires. server/ and client/ install independently; `npm install` here cascades via postinstall.",
+  "scripts": {
+    "postinstall": "npm install --prefix server --no-fund --no-audit && npm install --prefix client --no-fund --no-audit",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "test": "npm test --prefix server",
+    "build": "npm run build --prefix client",
+    "start": "node server/src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
