@@ -280,6 +280,11 @@ export class GameManager {
     }
 
     emits.push(...this._afterMove(session, game, match, side, res));
+    // Keep the Command Center live DURING play, not just at joins/completions —
+    // the per-act accuracy row (chapterAccuracy) is computed from actions, so
+    // without this push it would sit stale until the next lifecycle event.
+    // One small payload to one teacher socket per graded action: cheap.
+    emits.push(toTeacher(joinCode, 'lobby:update', this.roster(session)));
     this.registry.touch(joinCode);
     return { emits };
   }

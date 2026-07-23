@@ -200,6 +200,19 @@ test('end_session wipes the session from memory', () => {
   assert.equal(manager.registry.get(joinCode), undefined);
 });
 
+test('every graded action pushes a fresh roster to the teacher — the per-act row ticks DURING play', () => {
+  const manager = new GameManager();
+  const joinCode = makeSession(manager);
+  const res = join(manager, joinCode, 'Liv');
+
+  const r = playRight(manager, joinCode, res.studentId); // Act 1 Phase 1, right
+  const updates = eventsOf(r.emits, 'lobby:update');
+  assert.ok(updates.length >= 1, 'a move emits a lobby:update to the teacher');
+  const roster = updates.at(-1).payload;
+  assert.deepEqual(roster.chapterAccuracy[0], { count: 1, average: 100 },
+    'the Sugar Act row already reflects the just-graded action');
+});
+
 test('roster exposes a per-act (chapter) class accuracy row, labeled via game.meta.chapters', () => {
   const manager = new GameManager();
   const joinCode = makeSession(manager);
